@@ -63,15 +63,47 @@ exports.templateEditController = function(req, res) {
 };
 
 exports.templateDeleteController = function(req, res) {
-    /* TODO propagate deletes to pages */
     if (req.method == 'GET') {
         Template.findOne({'_id': req.params.id}, function(err, template) {
             if (err) { res.send('Error: ' + err); return; }
             res.render('template.delete.ejs', {'template': template});
         });
     } else {
-        Template.remove({'_id': req.params.id}, function(err, template) {
-            res.redirect('/');
+        Template.findOne({'_id': req.params.id}, function(err, template) {
+            template.remove(function(template_error) {
+                Page.remove({'template': template._id}, function(page_err) {
+                    res.redirect('/');
+                });
+            });
         });
     }
+};
+
+
+exports.pageCreateController = function(req, res) {
+    Template.find({}, function(err, templates) {
+        if (templates.length == 0)
+            res.send('You must create at least one template first');
+
+        var newPage = new Page();
+        if (req.method == 'GET') {
+            res.render('page.create.ejs', {'errors': null, 'page': newPage, 'templates': templates});
+        } else {
+            newPage.path = req.body.page.path
+            newPage.title = req.body.page.title
+            newPage.body = req.body.page.body
+            newPage.template = req.body.page.template_id
+            newPage.save(function(err) {
+                if (err) {
+                    var errors = [];
+                    for(var e in err.errors) errors.push(err.errors[e].type);
+                    res.render('page.create.ejs', {'errors': errors,
+                                                   'page': newPage,
+                                                   'templates': templates});
+                } else {
+                    res.redirect('/');
+                }
+            });
+        }
+    });
 };

@@ -21,5 +21,7 @@ app.get('/template/:id/edit', controllers.templateEditController);
 app.post('/template/:id/edit', controllers.templateEditController);
 app.get('/template/:id/delete', controllers.templateDeleteController);
 app.post('/template/:id/delete', controllers.templateDeleteController);
+app.get('/page/create', controllers.pageCreateController);
+app.post('/page/create', controllers.pageCreateController);
 
 app.listen(config.httpPort, config.httpHost);
