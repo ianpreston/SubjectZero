@@ -1,0 +1,30 @@
+<h2><%= page.title %></h2>
+
+<% if (errors) { %>
+    <% errors.forEach(function(e) { %>
+    <strong>Error: <%= e %>
+    <% }); %>
+<% } %>
+
+<form action="/page/<%= page.id %>/edit" method="POST">
+Page Path: <input type="text" name="page[path]" value="<%= page.path %>">
+<br>
+
+Page Title: <input type="text" name="page[title]" value="<%= page.title %>">
+<br>
+
+Template: <select name="page[template_id]">
+<% templates.forEach(function(t) { %>
+    <option value="<%= t.id %>" <% if (page.template == t.id) { %>selected<% } %>><%= t.template_name %></option>
+<% }); %>
+</select>
+<br>
+
+Page Body:
+<br>
+
+<textarea name="page[body]" rows=20 cols=120><%= page.body %></textarea>
+<br>
+
+<input type="submit" value="Save">
+</form>

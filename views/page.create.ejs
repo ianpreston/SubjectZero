@@ -13,7 +13,7 @@ Page Path: <input type="text" name="page[path]" value="<%= page.path || '/index.
 Page Title: <input type="text" name="page[title]" value="<%= page.title || '' %>">
 <br>
 
-Template: <select name="page[template_id]" value="<%= page.template %>">
+Template: <select name="page[template_id]">
 <% templates.forEach(function(t) { %>
     <option value="<%= t.id %>"><%= t.template_name %></option>
 <% }); %>

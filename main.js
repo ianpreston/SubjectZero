@@ -15,14 +15,22 @@ app.use(express.bodyParser());
 mongoose.connect(config.mongooseUrl)
 
 app.get('/', controllers.indexController);
+
 app.get('/template/create', controllers.templateCreateController);
 app.post('/template/create', controllers.templateCreateController);
+
 app.get('/template/:id/edit', controllers.templateEditController);
 app.post('/template/:id/edit', controllers.templateEditController);
+
 app.get('/template/:id/delete', controllers.templateDeleteController);
 app.post('/template/:id/delete', controllers.templateDeleteController);
+
 app.get('/page/create', controllers.pageCreateController);
 app.post('/page/create', controllers.pageCreateController);
+
+app.get('/page/:id/edit', controllers.pageEditController);
+app.post('/page/:id/edit', controllers.pageEditController);
+
 app.get('/page/:id/delete', controllers.pageDeleteController);
 app.post('/page/:id/delete', controllers.pageDeleteController);
 

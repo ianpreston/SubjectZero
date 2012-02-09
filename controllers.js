@@ -108,6 +108,32 @@ exports.pageCreateController = function(req, res) {
     });
 };
 
+exports.pageEditController = function(req, res) {
+    Template.find({}, function(template_err, templates) {
+        Page.findOne({'_id': req.params.id}, function(page_err, page) {
+            if (req.method == 'GET') {
+                res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates});
+            } else {
+                page.path = req.body.page.path
+                page.title = req.body.page.title
+                page.body = req.body.page.body
+                page.template = req.body.page.template_id
+                page.save(function(err) {
+                    if (err) {
+                        var errors = [];
+                        for (var e in err.errors) errors.push(err.errors[e].type);
+                        res.render('page.edit.ejs', {'errors': errors,
+                                                     'page': page,
+                                                     'templates': templates});
+                    } else {
+                        res.redirect('/');
+                    }
+                });
+            }
+        });
+    });
+};
+
 exports.pageDeleteController = function(req, res) {
     Page.findOne({'_id': req.params.id}, function(err, page) {
         if (req.method == 'GET') {
