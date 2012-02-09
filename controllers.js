@@ -107,3 +107,15 @@ exports.pageCreateController = function(req, res) {
         }
     });
 };
+
+exports.pageDeleteController = function(req, res) {
+    Page.findOne({'_id': req.params.id}, function(err, page) {
+        if (req.method == 'GET') {
+                res.render('page.delete.ejs', {'page': page});
+        } else {
+            page.remove(function(err) {
+                res.redirect('/');
+            });
+        }
+    });
+};

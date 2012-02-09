@@ -23,5 +23,8 @@ app.get('/template/:id/delete', controllers.templateDeleteController);
 app.post('/template/:id/delete', controllers.templateDeleteController);
 app.get('/page/create', controllers.pageCreateController);
 app.post('/page/create', controllers.pageCreateController);
+app.get('/page/:id/delete', controllers.pageDeleteController);
+app.post('/page/:id/delete', controllers.pageDeleteController);
+
 
 app.listen(config.httpPort, config.httpHost);
