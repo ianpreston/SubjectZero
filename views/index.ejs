@@ -1,0 +1,15 @@
+<h2>Templates</h2>
+<ul>
+<% templates.forEach(function(t) { %>
+    <li><strong><%= t.template_name %></strong> <a href="/template/<%= t.id %>/edit">edit</a> <a href="/template/<%= t.id %>/delete">delete</a></li>
+<% }); %>
+    <li><a href="/template/create">create template</a></li>
+</ul>
+
+<h2>Pages</h2>
+<ul>
+<% pages.forEach(function(p) { %>
+    <li><strong><%= p.path %></strong> <a href="/page/<%= p.id %>/edit">edit</a> <a href="/page/<%= p.id %>/delete">delete</a></li>
+<% }); %>
+    <li><a href="/page/create">create page</a></li>
+</ul>

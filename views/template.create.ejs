@@ -1,0 +1,20 @@
+<h2>Create Template</h2>
+
+<% if (errors) { %>
+    <% errors.forEach(function(e) { %>
+    <strong>Error: <%= e %>
+    <% }); %>
+<% } %>
+
+<form action="/template/create" method="POST">
+Template Name: <input type="text" name="template[template_name]" value="<%= template.template_name || '' %>">
+<br>
+
+Template Body:
+<br>
+
+<textarea name="template[body]" rows=20 cols=120><%= template.body || '' %></textarea>
+<br>
+
+<input type="submit" value="Create">
+</form>
