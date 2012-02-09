@@ -9,7 +9,7 @@
 <h2>Pages</h2>
 <ul>
 <% pages.forEach(function(p) { %>
-    <li><strong><%= p.path %></strong> <a href="/page/<%= p.id %>/edit">edit</a> <a href="/page/<%= p.id %>/delete">delete</a></li>
+    <li><strong><%= p.path %></strong> (<%= p.template.template_name %>) <a href="/page/<%= p.id %>/edit">edit</a> <a href="/page/<%= p.id %>/delete">delete</a></li>
 <% }); %>
     <li><a href="/page/create">create page</a></li>
 </ul>

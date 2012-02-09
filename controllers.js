@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 exports.indexController = function(req, res) {
     var templates = [];
     Template.find({}, function(template_err, templates) {
-        Page.find({}, function(page_err, pages) {
+        Page.find({}).populate('template').run(function(page_err, pages) {
             res.render('index.ejs', {'templates': templates, 'pages': pages});
         });
     });
@@ -137,7 +137,7 @@ exports.pageEditController = function(req, res) {
 exports.pageDeleteController = function(req, res) {
     Page.findOne({'_id': req.params.id}, function(err, page) {
         if (req.method == 'GET') {
-                res.render('page.delete.ejs', {'page': page});
+            res.render('page.delete.ejs', {'page': page});
         } else {
             page.remove(function(err) {
                 res.redirect('/');
