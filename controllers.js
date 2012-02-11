@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
 
     models = require('./models.js'),
+    generate = require('./generate.js'),
 
     Template = models.Template,
     Page = models.Page,
@@ -33,6 +34,7 @@ exports.templateCreateController = function(req, res) {
                                                    'template': req.body.template});
             } else {
                 res.redirect('/');
+                generate.generateAllPages();
             }
         });
 
@@ -55,6 +57,7 @@ exports.templateEditController = function(req, res) {
                                                      'template': template});
                 } else {
                     res.redirect('/');
+                    generate.generateAllPages();
                 }
             });
         }
@@ -102,6 +105,7 @@ exports.pageCreateController = function(req, res) {
                                                    'templates': templates});
                 } else {
                     res.redirect('/');
+                    generate.generateAllPages();
                 }
             });
         }
@@ -127,6 +131,7 @@ exports.pageEditController = function(req, res) {
                                                      'templates': templates});
                     } else {
                         res.redirect('/');
+                        generate.generateAllPages();
                     }
                 });
             }
