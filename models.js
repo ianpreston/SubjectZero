@@ -8,7 +8,7 @@ var TemplateSchema = new mongoose.Schema({
 
 var PageSchema = new mongoose.Schema({
     path: { type: String,
-            validate: [function(p) { return p.length > 0 }, 'Page must have a path'],
+            validate: [function(p) { return p != '/'; }, 'Page must have a path'],
             set: function(p) { return path.normalize('/' + p); } },
     template: { type: mongoose.Schema.ObjectId, ref: 'Template' },
     title: String,
