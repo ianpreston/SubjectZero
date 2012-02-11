@@ -4,9 +4,8 @@ var fs = require('fs'),
     connect = require('connect'),
     mongoose = require('mongoose'),
 
-    controllers = require('./controllers.js');
-
-var config = JSON.parse(fs.readFileSync('config.json'));
+    controllers = require('./controllers.js')
+    config = require('./config.js').config;
 
 var app = express.createServer();
 app.use(connect.basicAuth(config.authUsername, config.authPassword));
