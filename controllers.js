@@ -74,8 +74,13 @@ exports.templateDeleteController = function(req, res) {
     } else {
         Template.findOne({'_id': req.params.id}, function(err, template) {
             template.remove(function(template_error) {
-                Page.remove({'template': template._id}, function(page_err) {
+                Page.find({'template': template._id}, function(page_err, pages) {
                     res.redirect('/');
+                    pages.forEach(function(p) {
+                        generate.deletePage(p._id, function() {
+                            p.remove();
+                        });
+                    });
                 });
             });
         });
@@ -144,8 +149,10 @@ exports.pageDeleteController = function(req, res) {
         if (req.method == 'GET') {
             res.render('page.delete.ejs', {'page': page});
         } else {
-            page.remove(function(err) {
-                res.redirect('/');
+            generate.deletePage(page._id, function() {
+                page.remove(function(err) {
+                    res.redirect('/');
+                });
             });
         }
     });

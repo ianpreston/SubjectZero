@@ -53,7 +53,7 @@ var generatePage = function(page_id) {
 
         path.exists(path.dirname(page.path), function(exists) {
             if (!exists) {
-                exec('mkdir -p ' + path.join(config.webRoot + path.dirname(page.path)), function(err, stdout, stderr) {
+                exec('mkdir -p ' + path.join(config.webRoot, path.dirname(page.path)), function(err, stdout, stderr) {
                     if (err) {
                         console.log('Could not create path to template!');
                         console.log(err);
@@ -64,6 +64,18 @@ var generatePage = function(page_id) {
             } else {
                 saveTemplate(page.path, page.template.body, templateContext);
             }
+        });
+    });
+};
+
+/**
+ * The inverse of generatePage. Takes the ObjectId of a Page and
+ * deletes the generated static file for that page from disk.
+ */
+exports.deletePage = function(page_id, deletedCallback) {
+    Page.findOne({'_id': page_id}, function(err, page) {
+        fs.unlink(path.join(config.webRoot, page.path), function(err) {
+            deletedCallback();
         });
     });
 };
