@@ -3,6 +3,27 @@
 <head>
     <meta charset="utf-8">
     <title>SubjectZero</title>
+
+    <script type="text/javascript" src="https://raw.github.com/ajaxorg/ace/master/build/src/ace.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/ajaxorg/ace/master/build/src/mode-html.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Initialize the ace editor. Throw all this crap in the base template because
+        // who cares.
+        var editor = ace.edit('aceEditor');
+        var htmlMode = require('ace/mode/html').Mode;
+        editor.getSession().setMode(new htmlMode());
+
+        // Fill the ace editor with the page's value to start
+        editor.getSession().setValue($('#bodyTextarea').val());
+
+        // When the editor's content changes, change the hidden textarea's value
+        editor.getSession().on('change', function() {
+            $('#bodyTextarea').val(editor.getSession().getValue());
+        });
+    });
+    </script>
 </head>
 <body>
     <h1>SubjectZero</h1>

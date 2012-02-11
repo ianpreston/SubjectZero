@@ -23,7 +23,8 @@ Template: <select name="page[template_id]">
 Page Body:
 <br>
 
-<textarea name="page[body]" rows=20 cols=120><%= page.body %></textarea>
+<div id="aceEditor" style="position: relative; width: 900px; height: 400px;"></div>
+<textarea id="bodyTextarea" style="visibility: hidden;" name="page[body]"><%= page.body %></textarea>
 <br>
 
 <input type="submit" value="Save">
