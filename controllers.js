@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
     Template = models.Template,
     Page = models.Page,
+    StaticFile = models.StaticFile,
     validateTemplate = models.validateTemplate,
     validatePage = models.validatePage;
 

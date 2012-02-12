@@ -15,5 +15,24 @@ var PageSchema = new mongoose.Schema({
     body: String
 });
 
+var StaticFileSchema = new mongoose.Schema({
+    path: { type: String,
+            validate: [function(p) { return p != '/'; }, 'Static file must have a path'],
+            set: function(p) { return path.normalize('/' + p); } },
+
+    // True if the file is a text-only static file that should be
+    // editable from the web interface, False if it is an image or
+    // other media file that can be uploaded via the web interface
+    isText: Boolean,
+
+    // If isText, the body of the static file, otherwise null
+    body: String,
+
+    // If !isText, the location where the uploaded file is stored
+    // on the filesystem
+    realPath: String
+});
+
 exports.Template = mongoose.model('Template', TemplateSchema);
 exports.Page = mongoose.model('Page', PageSchema);
+exports.StaticFile = mongoose.model('StaticFile', StaticFileSchema);
