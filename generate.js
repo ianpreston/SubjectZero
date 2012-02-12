@@ -43,8 +43,8 @@ exports.generateAllPages = function() {
 /**
  *
  */
-var generatePage = function(page_id) {
-    Page.findOne({'_id': page_id}).populate('template').run(function(err, page) {
+var generatePage = function(pageId) {
+    Page.findOne({'_id': pageId}).populate('template').run(function(err, page) {
         var templateContext = {'page': {
             'title': page.title,
             'content': page.body,
@@ -72,8 +72,8 @@ var generatePage = function(page_id) {
  * The inverse of generatePage. Takes the ObjectId of a Page and
  * deletes the generated static file for that page from disk.
  */
-exports.deletePage = function(page_id, deletedCallback) {
-    Page.findOne({'_id': page_id}, function(err, page) {
+exports.deletePage = function(pageId, deletedCallback) {
+    Page.findOne({'_id': pageId}, function(err, page) {
         fs.unlink(path.join(config.webRoot, page.path), function(err) {
             deletedCallback();
         });

@@ -11,8 +11,8 @@ var mongoose = require('mongoose'),
 
 exports.indexController = function(req, res) {
     var templates = [];
-    Template.find({}, function(template_err, templates) {
-        Page.find({}).populate('template').run(function(page_err, pages) {
+    Template.find({}, function(templateErr, templates) {
+        Page.find({}).populate('template').run(function(pageErr, pages) {
             res.render('index.ejs', {'templates': templates, 'pages': pages});
         });
     });
@@ -73,8 +73,8 @@ exports.templateDeleteController = function(req, res) {
         });
     } else {
         Template.findOne({'_id': req.params.id}, function(err, template) {
-            template.remove(function(template_error) {
-                Page.find({'template': template._id}, function(page_err, pages) {
+            template.remove(function(templateError) {
+                Page.find({'template': template._id}, function(pageErr, pages) {
                     res.redirect('/');
                     pages.forEach(function(p) {
                         generate.deletePage(p._id, function() {
@@ -118,8 +118,8 @@ exports.pageCreateController = function(req, res) {
 };
 
 exports.pageEditController = function(req, res) {
-    Template.find({}, function(template_err, templates) {
-        Page.findOne({'_id': req.params.id}, function(page_err, page) {
+    Template.find({}, function(templateErr, templates) {
+        Page.findOne({'_id': req.params.id}, function(pageErr, page) {
             if (req.method == 'GET') {
                 res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates});
             } else {
