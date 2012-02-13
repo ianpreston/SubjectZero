@@ -10,7 +10,7 @@ var fs = require('fs'),
 
     Template = models.Template,
     Page = models.Page,
-    StaticFile = models.StaticFile,
+    MediaFile = models.MediaFile,
     validateTemplate = models.validateTemplate,
     validatePage = models.validatePage;
 
@@ -18,7 +18,7 @@ var fs = require('fs'),
 exports.indexController = function(req, res) {
     Template.find({}, function(templateErr, templates) {
         Page.find({}).populate('template').run(function(pageErr, pages) {
-            StaticFile.find({'isText': false}, function(staticMediaErr, staticMediaFiles) {
+            MediaFile.find({}, function(staticMediaErr, staticMediaFiles) {
                 res.render('index.ejs', {'templates': templates, 'pages': pages, 'staticMediaFiles': staticMediaFiles});
             });
         });
@@ -171,7 +171,7 @@ exports.pageDeleteController = function(req, res) {
 
 
 exports.staticMediaCreateController = function(req, res) {
-    var newFile = new StaticFile();
+    var newFile = new MediaFile();
     if (req.method == 'GET') {
         res.render('static.media.create.ejs', {'errors': null});
     } else {
@@ -180,8 +180,7 @@ exports.staticMediaCreateController = function(req, res) {
 
         // Move the uploaded file from /tmp to config.mediaUploadPath
         fs.rename(req.files.mediaUpload.path, fileSavePath, function(renameErr) {
-            // Add a StaticFile document to the database
-            newFile.isText = false;
+            // Add a MediaFile document to the database
             newFile.path = req.body.filePath;
             newFile.mediaFilePath = fileSavePath;
             newFile.save(function(err) {
@@ -199,7 +198,7 @@ exports.staticMediaCreateController = function(req, res) {
 };
 
 exports.staticMediaDeleteController = function(req, res) {
-    StaticFile.findOne({'_id': req.params.id}, function(err, file) {
+    MediaFile.findOne({'_id': req.params.id}, function(err, file) {
         if (req.method == 'GET') {
             res.render('static.media.delete.ejs', {'file': file});
         } else {

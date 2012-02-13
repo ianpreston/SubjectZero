@@ -10,7 +10,7 @@ var fs = require('fs'),
 
     Page = models.Page,
     Template = models.Template,
-    StaticFile = models.StaticFile;
+    MediaFile = models.MediaFile;
 
 
 /**
@@ -28,7 +28,7 @@ exports.generateSite = function() {
 
     // Iterate through all static media files in the site and call
     // generateStaticMediaFile() on each
-    StaticFile.find({'isText': false}, function(err, mediaFiles) {
+    MediaFile.find({}, function(err, mediaFiles) {
         mediaFiles.forEach(function(f) {
             generateStaticMediaFile(f._id, config.webRoot);
         });
@@ -49,10 +49,10 @@ exports.deletePage = function(pageId, deletedCallback) {
 
 /**
  * The inverse of generateStaticMediaFile. Takes the ObjectId of a
- * StaticFile and deletes that media file from webroot.
+ * MediaFile and deletes that media file from webroot.
  */
 exports.deleteStaticMediaFile = function(fileId, deletedCallback) {
-    StaticFile.findOne({'_id': fileId}, function(err, file) {
+    MediaFile.findOne({'_id': fileId}, function(err, file) {
         fs.unlink(path.join(config.webRoot, file.path), function(err) {
             deletedCallback();
         });
@@ -99,7 +99,7 @@ var generatePage = function(pageId) {
  * Copies a static media file from config.mediaUploadPath to webroot
  */
 var generateStaticMediaFile = function(fileId) {
-    StaticFile.findOne({'_id': fileId}, function(err, file) {
+    MediaFile.findOne({'_id': fileId}, function(err, file) {
         var finalPath = path.join(config.webRoot, file.path);
 
         // Make sure a path up to the static file's path in webroot exists
