@@ -29,10 +29,11 @@ var saveTemplate = function(savePath, template, context) {
 };
 
 /**
- * Iterates through all Pages in the database and calls
- * generatePage() on them.
+ * Generates the entire static site. Generates each static page and moves them
+ * to webroot, copies all statics to webroot, and does everything else to compile
+ * the entire site into webroot.
  */
-exports.generateAllPages = function() {
+exports.generateSite = function() {
     Page.find({}, function(err, pages) {
         pages.forEach(function(page) {
             generatePage(page._id, config.webRoot);

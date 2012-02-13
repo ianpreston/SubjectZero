@@ -42,7 +42,7 @@ exports.templateCreateController = function(req, res) {
                                                    'template': req.body.template});
             } else {
                 res.redirect('/');
-                generate.generateAllPages();
+                generate.generateSite();
             }
         });
 
@@ -65,7 +65,7 @@ exports.templateEditController = function(req, res) {
                                                      'template': template});
                 } else {
                     res.redirect('/');
-                    generate.generateAllPages();
+                    generate.generateSite();
                 }
             });
         }
@@ -118,7 +118,7 @@ exports.pageCreateController = function(req, res) {
                                                    'templates': templates});
                 } else {
                     res.redirect('/');
-                    generate.generateAllPages();
+                    generate.generateSite();
                 }
             });
         }
@@ -144,7 +144,7 @@ exports.pageEditController = function(req, res) {
                                                      'templates': templates});
                     } else {
                         res.redirect('/');
-                        generate.generateAllPages();
+                        generate.generateSite();
                     }
                 });
             }
