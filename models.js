@@ -7,11 +7,20 @@ var TemplateSchema = new mongoose.Schema({
 });
 
 var PageSchema = new mongoose.Schema({
+    // The path to the page within webroot. i.e. if webroot is '/webroot/' and
+    // a page's .path is '/index.html', the page will be compiled and saved to
+    // '/webroot/index.html'
     path: { type: String,
             validate: [function(p) { return p != '/'; }, 'Page must have a path'],
             set: function(p) { return path.normalize('/' + p); } },
+
+    // The Template that this page belongs to
     template: { type: mongoose.Schema.ObjectId, ref: 'Template' },
+
+    // The page's title. Generally used in <title> and headers within the page
     title: String,
+
+    // The contents of the page
     body: String
 });
 
