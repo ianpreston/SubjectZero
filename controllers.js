@@ -171,14 +171,14 @@ exports.staticMediaCreateController = function(req, res) {
         res.render('static.media.create.ejs', {'errors': null});
     } else {
         // Find the path where the file upload will be stored
-        var fileRealPath = path.join(config.mediaUploadPath, uuid.v1());
+        var fileSavePath = path.join(config.mediaUploadPath, uuid.v1());
 
         // Move the uploaded file from /tmp to config.mediaUploadPath
-        fs.rename(req.files.mediaUpload.path, fileRealPath, function(renameErr) {
+        fs.rename(req.files.mediaUpload.path, fileSavePath, function(renameErr) {
             // Add a StaticFile document to the database
             newFile.isText = false;
             newFile.path = req.body.filePath;
-            newFile.realPath = fileRealPath;
+            newFile.mediaFilePath = fileSavePath;
             newFile.save(function(err) {
                 if (err) {
                     var errors = [];

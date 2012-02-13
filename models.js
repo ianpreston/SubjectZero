@@ -30,7 +30,7 @@ var StaticFileSchema = new mongoose.Schema({
 
     // If !isText, the location where the uploaded file is stored
     // on the filesystem
-    realPath: String
+    mediaFilePath: String
 });
 
 exports.Template = mongoose.model('Template', TemplateSchema);
