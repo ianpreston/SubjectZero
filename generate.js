@@ -62,19 +62,11 @@ var generatePage = function(pageId) {
             'path': page.path,
         }};
 
-        path.exists(path.dirname(page.path), function(exists) {
-            if (!exists) {
-                exec('mkdir -p ' + path.join(config.webRoot, path.dirname(page.path)), function(err, stdout, stderr) {
-                    if (err) {
-                        console.log('Could not create path to template!');
-                        console.log(err);
-                    } else {
-                        saveTemplate(page.path, page.template.body, templateContext);
-                    }
-                });
-            } else {
-                saveTemplate(page.path, page.template.body, templateContext);
-            }
+        // Make sure the page's path exists. i.e. if the page's path is '/foo/bar/index.html',
+        // run a mkdir on `webroot/foo/bar'
+        exec('mkdir -p ' + path.join(config.webRoot, path.dirname(page.path)), function(err, stdout, stderr) {
+            // Now save the template
+            saveTemplate(page.path, page.template.body, templateContext);
         });
     });
 };
