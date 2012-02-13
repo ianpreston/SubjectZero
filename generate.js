@@ -48,6 +48,18 @@ exports.deletePage = function(pageId, deletedCallback) {
 };
 
 /**
+ * The inverse of generateStaticMediaFile. Takes the ObjectId of a
+ * StaticFile and deletes that media file from webroot.
+ */
+exports.deleteStaticMediaFile = function(fileId, deletedCallback) {
+    StaticFile.findOne({'_id': fileId}, function(err, file) {
+        fs.unlink(path.join(config.webRoot, file.path), function(err) {
+            deletedCallback();
+        });
+    });
+};
+
+/**
  * Compiles a template and saves it to disk at config.webRoot + path. Expects that
  * the full path to file exists and is writable and that nothing bad ever
  * happens.

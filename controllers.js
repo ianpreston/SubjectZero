@@ -197,3 +197,17 @@ exports.staticMediaCreateController = function(req, res) {
         });
     }
 };
+
+exports.staticMediaDeleteController = function(req, res) {
+    StaticFile.findOne({'_id': req.params.id}, function(err, file) {
+        if (req.method == 'GET') {
+            res.render('static.media.delete.ejs', {'file': file});
+        } else {
+            generate.deleteStaticMediaFile(file._id, function() {
+                file.remove(function(err) {
+                    res.redirect('/');
+                });
+            });
+        }
+    });
+};
