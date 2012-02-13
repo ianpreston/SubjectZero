@@ -188,7 +188,7 @@ exports.staticMediaCreateController = function(req, res) {
                     res.render('static.media.create.ejs', {'errors': errors});
                  } else {
                     res.redirect('/');
-                    // TODO Generate site
+                    generate.generateSite();
                 }
             });
         });
