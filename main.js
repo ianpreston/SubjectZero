@@ -33,11 +33,11 @@ app.post('/page/:id/edit', controllers.pageEditController);
 app.get('/page/:id/delete', controllers.pageDeleteController);
 app.post('/page/:id/delete', controllers.pageDeleteController);
 
-app.get('/static/media/create', controllers.staticMediaCreateController);
-app.post('/static/media/create', controllers.staticMediaCreateController);
+app.get('/static/media/create', controllers.mediaCreateController);
+app.post('/static/media/create', controllers.mediaCreateController);
 
-app.get('/static/media/:id/delete', controllers.staticMediaDeleteController);
-app.post('/static/media/:id/delete', controllers.staticMediaDeleteController);
+app.get('/static/media/:id/delete', controllers.mediaDeleteController);
+app.post('/static/media/:id/delete', controllers.mediaDeleteController);
 
 
 app.listen(config.httpPort, config.httpHost);

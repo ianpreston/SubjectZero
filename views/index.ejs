@@ -16,7 +16,7 @@
 
 <h2>Media Files</h2>
 <ul>
-<% staticMediaFiles.forEach(function(m) { %>
+<% mediaFiles.forEach(function(m) { %>
     <li><strong><%= m.path %></strong> <a href="/static/media/<%= m.id %>/edit">edit</a> <a href="/static/media/<%= m.id %>/delete">delete</a></li>
 <% }); %>
     <li><a href="/static/media/create">upload media file</a></li>

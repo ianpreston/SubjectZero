@@ -18,8 +18,8 @@ var fs = require('fs'),
 exports.indexController = function(req, res) {
     Template.find({}, function(templateErr, templates) {
         Page.find({}).populate('template').run(function(pageErr, pages) {
-            MediaFile.find({}, function(staticMediaErr, staticMediaFiles) {
-                res.render('index.ejs', {'templates': templates, 'pages': pages, 'staticMediaFiles': staticMediaFiles});
+            MediaFile.find({}, function(mediaErr, mediaFiles) {
+                res.render('index.ejs', {'templates': templates, 'pages': pages, 'mediaFiles': mediaFiles});
             });
         });
     });
@@ -170,7 +170,7 @@ exports.pageDeleteController = function(req, res) {
 };
 
 
-exports.staticMediaCreateController = function(req, res) {
+exports.mediaCreateController = function(req, res) {
     var newFile = new MediaFile();
     if (req.method == 'GET') {
         res.render('static.media.create.ejs', {'errors': null});
@@ -197,12 +197,12 @@ exports.staticMediaCreateController = function(req, res) {
     }
 };
 
-exports.staticMediaDeleteController = function(req, res) {
+exports.mediaDeleteController = function(req, res) {
     MediaFile.findOne({'_id': req.params.id}, function(err, file) {
         if (req.method == 'GET') {
             res.render('static.media.delete.ejs', {'file': file});
         } else {
-            generate.deleteStaticMediaFile(file._id, function() {
+            generate.deleteMediaFile(file._id, function() {
                 file.remove(function(err) {
                     res.redirect('/');
                 });

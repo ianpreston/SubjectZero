@@ -26,11 +26,11 @@ exports.generateSite = function() {
         });
     });
 
-    // Iterate through all static media files in the site and call
-    // generateStaticMediaFile() on each
+    // Iterate through all media files in the site and call
+    // generateMediaFile() on each
     MediaFile.find({}, function(err, mediaFiles) {
         mediaFiles.forEach(function(f) {
-            generateStaticMediaFile(f._id, config.webRoot);
+            generateMediaFile(f._id, config.webRoot);
         });
     });
 };
@@ -48,10 +48,10 @@ exports.deletePage = function(pageId, deletedCallback) {
 };
 
 /**
- * The inverse of generateStaticMediaFile. Takes the ObjectId of a
- * MediaFile and deletes that media file from webroot.
+ * The inverse of generateMediaFile. Takes the ObjectId of a
+ * MediaFile and deletes that file from webroot.
  */
-exports.deleteStaticMediaFile = function(fileId, deletedCallback) {
+exports.deleteMediaFile = function(fileId, deletedCallback) {
     MediaFile.findOne({'_id': fileId}, function(err, file) {
         fs.unlink(path.join(config.webRoot, file.path), function(err) {
             deletedCallback();
@@ -96,13 +96,13 @@ var generatePage = function(pageId) {
 };
 
 /**
- * Copies a static media file from config.mediaUploadPath to webroot
+ * Copies a media file from config.mediaUploadPath to webroot
  */
-var generateStaticMediaFile = function(fileId) {
+var generateMediaFile = function(fileId) {
     MediaFile.findOne({'_id': fileId}, function(err, file) {
         var finalPath = path.join(config.webRoot, file.path);
 
-        // Make sure a path up to the static file's path in webroot exists
+        // Make sure a path up to the media file's path in webroot exists
         exec('mkdir -p ' + path.dirname(finalPath), function(err, stdout, stderr) {
             // Ignore errors because nothing bad ever happens
 
