@@ -19,7 +19,9 @@ exports.indexController = function(req, res) {
     var templates = [];
     Template.find({}, function(templateErr, templates) {
         Page.find({}).populate('template').run(function(pageErr, pages) {
-            res.render('index.ejs', {'templates': templates, 'pages': pages});
+            StaticFile.find({'isText': false}, function(staticMediaErr, staticMediaFiles) {
+                res.render('index.ejs', {'templates': templates, 'pages': pages, 'staticMediaFiles': staticMediaFiles});
+            });
         });
     });
 };

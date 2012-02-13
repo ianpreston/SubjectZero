@@ -13,3 +13,13 @@
 <% }); %>
     <li><a href="/page/create">create page</a></li>
 </ul>
+
+<h2>Static Files</h2>
+<h3>Text</h3>
+<h3>Media</h3>
+<ul>
+<% staticMediaFiles.forEach(function(m) { %>
+    <li><strong><%= m.path %></strong> <a href="/static/media/<%= m.id %>/edit">edit</a> <a href="/static/media/<%= m.id %>/delete">delete</a></li>
+<% }); %>
+    <li><a href="/static/media/create">upload media file</a></li>
+</ul>
