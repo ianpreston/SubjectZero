@@ -1,7 +1,12 @@
-var mongoose = require('mongoose'),
+var fs = require('fs'),
+    path = require('path'),
+
+    mongoose = require('mongoose'),
+    uuid = require('node-uuid'),
 
     models = require('./models.js'),
     generate = require('./generate.js'),
+    config = require('./config.js').config,
 
     Template = models.Template,
     Page = models.Page,
@@ -157,4 +162,33 @@ exports.pageDeleteController = function(req, res) {
             });
         }
     });
+};
+
+
+exports.staticMediaCreateController = function(req, res) {
+    var newFile = new StaticFile();
+    if (req.method == 'GET') {
+        res.render('static.media.create.ejs', {'errors': null});
+    } else {
+        // Find the path where the file upload will be stored
+        var fileRealPath = path.join(config.mediaUploadPath, uuid.v1());
+
+        // Move the uploaded file from /tmp to config.mediaUploadPath
+        fs.rename(req.files.mediaUpload.path, fileRealPath, function(renameErr) {
+            // Add a StaticFile document to the database
+            newFile.isText = false;
+            newFile.path = req.body.filePath;
+            newFile.realPath = fileRealPath;
+            newFile.save(function(err) {
+                if (err) {
+                    var errors = [];
+                    for (var e in err.errors) errors.push(err.errors[e].type);
+                    res.render('static.media.create.ejs', {'errors': errors});
+                 } else {
+                    res.redirect('/');
+                    // TODO Generate site
+                }
+            });
+        });
+    }
 };

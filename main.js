@@ -33,5 +33,8 @@ app.post('/page/:id/edit', controllers.pageEditController);
 app.get('/page/:id/delete', controllers.pageDeleteController);
 app.post('/page/:id/delete', controllers.pageDeleteController);
 
+app.get('/static/media/create', controllers.staticMediaCreateController);
+app.post('/static/media/create', controllers.staticMediaCreateController);
+
 
 app.listen(config.httpPort, config.httpHost);
