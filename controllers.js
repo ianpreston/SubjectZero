@@ -173,7 +173,7 @@ exports.pageDeleteController = function(req, res) {
 exports.mediaCreateController = function(req, res) {
     var newFile = new MediaFile();
     if (req.method == 'GET') {
-        res.render('static.media.create.ejs', {'errors': null});
+        res.render('media.create.ejs', {'errors': null});
     } else {
         // Find the path where the file upload will be stored
         var fileSavePath = path.join(config.mediaUploadPath, uuid.v1());
@@ -187,7 +187,7 @@ exports.mediaCreateController = function(req, res) {
                 if (err) {
                     var errors = [];
                     for (var e in err.errors) errors.push(err.errors[e].type);
-                    res.render('static.media.create.ejs', {'errors': errors});
+                    res.render('media.create.ejs', {'errors': errors});
                  } else {
                     res.redirect('/');
                     generate.generateSite();
@@ -200,7 +200,7 @@ exports.mediaCreateController = function(req, res) {
 exports.mediaDeleteController = function(req, res) {
     MediaFile.findOne({'_id': req.params.id}, function(err, file) {
         if (req.method == 'GET') {
-            res.render('static.media.delete.ejs', {'file': file});
+            res.render('media.delete.ejs', {'file': file});
         } else {
             generate.deleteMediaFile(file._id, function() {
                 file.remove(function(err) {
