@@ -16,7 +16,6 @@ var fs = require('fs'),
 
 
 exports.indexController = function(req, res) {
-    var templates = [];
     Template.find({}, function(templateErr, templates) {
         Page.find({}).populate('template').run(function(pageErr, pages) {
             StaticFile.find({'isText': false}, function(staticMediaErr, staticMediaFiles) {
