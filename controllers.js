@@ -131,21 +131,25 @@ exports.pageEditController = function(req, res) {
             if (req.method == 'GET') {
                 res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates});
             } else {
-                page.path = req.body.page.path
-                page.title = req.body.page.title
-                page.body = req.body.page.body
-                page.template = req.body.page.template_id
-                page.save(function(err) {
-                    if (err) {
-                        var errors = [];
-                        for (var e in err.errors) errors.push(err.errors[e].type);
-                        res.render('page.edit.ejs', {'errors': errors,
-                                                     'page': page,
-                                                     'templates': templates});
-                    } else {
-                        res.redirect('/');
-                        generate.generateSite();
-                    }
+                // Delete the old page on disk, so if the path changes the
+                // old file isn't left behind in webroot
+                generate.deletePage(page._id, function() {
+                    page.path = req.body.page.path
+                    page.title = req.body.page.title
+                    page.body = req.body.page.body
+                    page.template = req.body.page.template_id
+                    page.save(function(err) {
+                        if (err) {
+                            var errors = [];
+                            for (var e in err.errors) errors.push(err.errors[e].type);
+                            res.render('page.edit.ejs', {'errors': errors,
+                                                         'page': page,
+                                                         'templates': templates});
+                        } else {
+                            res.redirect('/');
+                            generate.generateSite();
+                        }
+                    });
                 });
             }
         });
