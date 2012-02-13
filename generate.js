@@ -9,7 +9,8 @@ var fs = require('fs'),
     config = require('./config.js').config,
 
     Page = models.Page,
-    Template = models.Template;
+    Template = models.Template,
+    StaticFile = models.StaticFile;
 
 
 /**
@@ -34,9 +35,18 @@ var saveTemplate = function(savePath, template, context) {
  * the entire site into webroot.
  */
 exports.generateSite = function() {
+    // Iterate through all Pages in the site and call generatePage() oneach
     Page.find({}, function(err, pages) {
         pages.forEach(function(page) {
             generatePage(page._id, config.webRoot);
+        });
+    });
+
+    // Iterate through all static media files in the site and call
+    // generateStaticMediaFile() on each
+    StaticFile.find({'isText': false}, function(err, mediaFiles) {
+        mediaFiles.forEach(function(f) {
+            generateStaticMediaFile(f._id, config.webRoot);
         });
     });
 };
@@ -68,6 +78,29 @@ var generatePage = function(pageId) {
         });
     });
 };
+
+/**
+ * Copies a static media file from config.mediaUploadPath to webroot
+ */
+var generateStaticMediaFile = function(fileId) {
+    StaticFile.findOne({'_id': fileId}, function(err, file) {
+        var finalPath = path.join(config.webRoot, file.path);
+
+        // Make sure a path up to the static file's path in webroot exists
+        exec('mkdir -p ' + path.dirname(finalPath), function(err, stdout, stderr) {
+            // Ignore errors because nothing bad ever happens
+
+            // Exec a `cp' command out of sheer laziness
+            exec('cp ' + file.mediaFilePath + ' ' + finalPath, function(err, stdout, stderr) {
+                if (err) {
+                    console.log('Could not copy static file!');
+                    console.log(err);
+                }
+            });
+        });
+    });
+};
+         
 
 /**
  * The inverse of generatePage. Takes the ObjectId of a Page and
