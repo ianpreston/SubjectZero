@@ -1,9 +1,0 @@
-{
-    "mongooseUrl": "mongodb://localhost/subjectzero",
-    "authUsername": "admin",
-    "authPassword": "admin",
-    "httpHost": "0.0.0.0",
-    "httpPort": "3000",
-    "webRoot": "/home/ian/webroot",
-    "mediaUploadPath": "/home/ian/subzeromedia"
-}
