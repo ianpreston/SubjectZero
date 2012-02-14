@@ -5,5 +5,6 @@
     "httpHost": "0.0.0.0",
     "httpPort": "3000",
     "webRoot": "/path/to/your/web/root",
-    "mediaUploadPath": "/path/to/your/media/upload/dir"
+    "mediaUploadPath": "/path/to/your/media/upload/dir",
+    "logFilename": "/path/to/your/logfile.log",
 }

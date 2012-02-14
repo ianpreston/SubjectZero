@@ -4,6 +4,7 @@ var fs = require('fs'),
     exec = require('child_process').exec,
 
     hogan = require('hogan'),
+    logger = require('log4js').getLogger(),
 
     models = require('./models.js'),
     config = require('./config.js').config,
@@ -19,6 +20,8 @@ var fs = require('fs'),
  * the entire site into webroot.
  */
 exports.generateSite = function() {
+    logger.info('Generating entire site into webroot: ' + config.webRoot);
+
     // Iterate through all Pages in the site and call generatePage() oneach
     Page.find({}, function(err, pages) {
         pages.forEach(function(page) {
@@ -72,7 +75,11 @@ var saveTemplate = function(savePath, template, context) {
     var hoganTemplate = hogan.compile(template);
     var finalPageContent = hoganTemplate.render(context);
 
-    fs.writeSync(fs.openSync(path.join(config.webRoot, savePath), 'w'), finalPageContent);
+    fs.writeFile(path.join(config.webRoot, savePath), finalPageContent, function(err) {
+        if (err) {
+            logger.error('Failed to save page to path: ' + path.join(config.webRoot, savePath));
+        }
+    });
 };
 
 /**
@@ -88,7 +95,11 @@ var generatePage = function(pageId) {
 
         // Make sure the page's path exists. i.e. if the page's path is '/foo/bar/index.html',
         // run a mkdir on `webroot/foo/bar'
-        exec('mkdir -p ' + path.join(config.webRoot, path.dirname(page.path)), function(err, stdout, stderr) {
+        exec('mkdir -p ' + path.join(config.webRoot, path.dirname(page.path)), function(mkdirErr, mkdirStdout, mkdirStderr) {
+            if (mkdirErr) {
+                logger.error('Failed to create path to static page: ' + path.join(config.webRoot, path.dirname(page.path))); // TODO
+            }
+
             // Now save the template
             saveTemplate(page.path, page.template.body, templateContext);
         });
@@ -103,14 +114,15 @@ var generateMediaFile = function(fileId) {
         var finalPath = path.join(config.webRoot, file.path);
 
         // Make sure a path up to the media file's path in webroot exists
-        exec('mkdir -p ' + path.dirname(finalPath), function(err, stdout, stderr) {
-            // Ignore errors because nothing bad ever happens
+        exec('mkdir -p ' + path.dirname(finalPath), function(mkdirErr, mkdirStdout, mkdirStderr) {
+            if (mkdirErr) {
+                logger.error('Failed to create path to media file: ' + path.dirname(finalPath));
+            }
 
             // Exec a `cp' command out of sheer laziness
-            exec('cp ' + file.mediaFilePath + ' ' + finalPath, function(err, stdout, stderr) {
-                if (err) {
-                    console.log('Could not copy static file!');
-                    console.log(err);
+            exec('cp ' + file.mediaFilePath + ' ' + finalPath, function(cpErr, cpStdout, cpStderr) {
+                if (cpErr) {
+                    logger.error('Failed to copy media file: "' + file.mediaFilePath + '" to "' + finalPath + '"');
                 }
             });
         });

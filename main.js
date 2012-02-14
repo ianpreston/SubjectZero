@@ -3,6 +3,7 @@ var fs = require('fs'),
     express = require('express'),
     connect = require('connect'),
     mongoose = require('mongoose'),
+    log4js = require('log4js'),
 
     controllers = require('./controllers.js')
     config = require('./config.js').config;
@@ -11,7 +12,9 @@ var app = express.createServer();
 app.use(connect.basicAuth(config.authUsername, config.authPassword));
 app.use(express.bodyParser());
 
-mongoose.connect(config.mongooseUrl)
+mongoose.connect(config.mongooseUrl);
+
+log4js.addAppender(log4js.fileAppender(config.logFilename));
 
 app.get('/', controllers.indexController);
 
