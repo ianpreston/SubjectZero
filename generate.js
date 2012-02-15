@@ -63,14 +63,14 @@ exports.deleteMediaFile = function(fileId, deletedCallback) {
 };
 
 /**
- * Compiles a template and saves it to disk at config.webRoot + path. Expects that
+ * Compiles a static page and saves it to disk at config.webRoot + path. Expects that
  * the full path to file exists and is writable.
  *
  * path : The page's path relative to config.webRoot
  * template : A string containing the template contents
  * context : The template context
  */
-var saveTemplate = function(savePath, template, context) {
+var compileStaticPageToDisk = function(savePath, template, context) {
     var hoganTemplate = hogan.compile(template);
     var finalPageContent = hoganTemplate.render(context);
 
@@ -101,7 +101,7 @@ var generatePage = function(pageId) {
             }
 
             // Now compile the html file and save it to disk
-            saveTemplate(page.path, page.template.body, templateContext);
+            compileStaticPageToDisk(page.path, page.template.body, templateContext);
         });
     });
 };
