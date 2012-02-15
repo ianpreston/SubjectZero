@@ -2,10 +2,10 @@ var fs = require('fs'),
     path = require('path'),
 
     mongoose = require('mongoose'),
-    uuid = require('node-uuid'),
 
     models = require('./models.js'),
     generate = require('./generate.js'),
+    utils = require('./utils.js'),
     config = require('./config.js').config,
 
     Template = models.Template,
@@ -175,24 +175,21 @@ exports.mediaCreateController = function(req, res) {
     if (req.method == 'GET') {
         res.render('media.create.ejs', {'errors': null});
     } else {
-        // Find the path where the file upload will be stored
-        var fileSavePath = path.join(config.mediaUploadPath, uuid.v1());
-
         // Move the uploaded file from /tmp to config.mediaUploadPath
-        fs.rename(req.files.mediaUpload.path, fileSavePath, function(renameErr) {
-            // Add a MediaFile document to the database
-            newFile.path = req.body.filePath;
-            newFile.mediaFilePath = fileSavePath;
-            newFile.save(function(err) {
-                if (err) {
-                    var errors = [];
-                    for (var e in err.errors) errors.push(err.errors[e].type);
-                    res.render('media.create.ejs', {'errors': errors});
-                 } else {
-                    res.redirect('/');
-                    generate.generateSite();
-                }
-            });
+        var mediaFilePath = utils.savePhysicalMediaFile(req.files.mediaUpload.path);
+
+        // Add a MediaFile document to the database
+        newFile.path = req.body.filePath;
+        newFile.mediaFilePath = mediaFilePath;
+        newFile.save(function(err) {
+            if (err) {
+                var errors = [];
+                for (var e in err.errors) errors.push(err.errors[e].type);
+                res.render('media.create.ejs', {'errors': errors});
+             } else {
+                res.redirect('/');
+                generate.generateSite();
+             }
         });
     }
 };
