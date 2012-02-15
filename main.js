@@ -42,5 +42,7 @@ app.post('/media/create', controllers.mediaCreateController);
 app.get('/media/:id/delete', controllers.mediaDeleteController);
 app.post('/media/:id/delete', controllers.mediaDeleteController);
 
+app.get('/media/:id/edit', controllers.mediaEditController);
+app.post('/media/:id/edit', controllers.mediaEditController);
 
 app.listen(config.httpPort, config.httpHost);

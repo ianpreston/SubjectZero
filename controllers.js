@@ -194,6 +194,37 @@ exports.mediaCreateController = function(req, res) {
     }
 };
 
+exports.mediaEditController = function(req, res) {
+    MediaFile.findOne({'_id': req.params.id}, function(err, file) {
+        if (req.method == 'GET') {
+            res.render('media.edit.ejs', {'errors': null, 'file': file});
+        } else {
+            // Delete the old media file from disk, so if the path changes the
+            // old file isn't left behind in webroot
+            generate.deleteMediaFile(file._id, function() {
+                // If a new file was uploaded
+                if (req.files.uploaded.size > 0) {
+                    // Move the uploaded file into config.mediaUploadPath and
+                    // update the MediaFile's mediaFilePath
+                    file.mediaFilePath = utils.savePhysicalMediaFile(req.files.uploaded.path);
+                }
+
+                file.path = req.body.file.path;
+                file.save(function(err) {
+                    if (err) {
+                        var errors = [];
+                        for (var e in err.errors) errors.push(err.errors[e].type);
+                        res.render('media.create.ejs', {'errors': errors, 'file': file});
+                     } else {
+                        res.redirect('/');
+                        generate.generateSite();
+                    }
+                });
+            });
+        }
+    });
+};
+
 exports.mediaDeleteController = function(req, res) {
     MediaFile.findOne({'_id': req.params.id}, function(err, file) {
         if (req.method == 'GET') {

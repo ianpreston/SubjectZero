@@ -1,0 +1,17 @@
+<h2>Edit Media File</h2>
+
+<% if (errors) { %>
+    <% errors.forEach(function(e) { %>
+    <strong>Error: <%= e %></strong>
+    <% }); %>
+<% } %>
+
+<form action="/media/<%= file.id %>/edit" enctype="multipart/form-data" method="POST">
+File Path: <input type="text" name="file[path]" value="<%= file.path %>">
+<br>
+
+Upload new file: <input type="file" name="uploaded">
+<br>
+
+<input type="submit" value="Create">
+</form>
