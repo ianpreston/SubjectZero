@@ -176,10 +176,10 @@ exports.mediaCreateController = function(req, res) {
         res.render('media.create.ejs', {'errors': null});
     } else {
         // Move the uploaded file from /tmp to config.mediaUploadPath
-        var mediaFilePath = utils.savePhysicalMediaFile(req.files.mediaUpload.path);
+        var mediaFilePath = utils.savePhysicalMediaFile(req.files.uploaded.path);
 
         // Add a MediaFile document to the database
-        newFile.path = req.body.filePath;
+        newFile.path = req.body.file.path;
         newFile.mediaFilePath = mediaFilePath;
         newFile.save(function(err) {
             if (err) {

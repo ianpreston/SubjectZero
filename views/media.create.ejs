@@ -1,4 +1,4 @@
-<h2>Create Static File</h2>
+<h2>Create Media File</h2>
 
 <% if (errors) { %>
     <% errors.forEach(function(e) { %>
@@ -7,10 +7,10 @@
 <% } %>
 
 <form action="/media/create" enctype="multipart/form-data" method="POST">
-File Path: <input type="text" name="filePath">
+File Path: <input type="text" name="file[path]">
 <br>
 
-File: <input type="file" name="mediaUpload">
+File: <input type="file" name="uploaded">
 <br>
 
 <input type="submit" value="Create">
