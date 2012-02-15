@@ -64,8 +64,7 @@ exports.deleteMediaFile = function(fileId, deletedCallback) {
 
 /**
  * Compiles a template and saves it to disk at config.webRoot + path. Expects that
- * the full path to file exists and is writable and that nothing bad ever
- * happens.
+ * the full path to file exists and is writable.
  *
  * path : The page's path relative to config.webRoot
  * template : A string containing the template contents
@@ -83,7 +82,8 @@ var saveTemplate = function(savePath, template, context) {
 };
 
 /**
- *
+ * Takes the ObjectId of a Page. Populates a template's context with that Page's
+ * information and saves the resulting static file to webroot.
  */
 var generatePage = function(pageId) {
     Page.findOne({'_id': pageId}).populate('template').run(function(err, page) {
@@ -100,7 +100,7 @@ var generatePage = function(pageId) {
                 logger.error('Failed to create path to static page: ' + path.join(config.webRoot, path.dirname(page.path))); // TODO
             }
 
-            // Now save the template
+            // Now compile the html file and save it to disk
             saveTemplate(page.path, page.template.body, templateContext);
         });
     });
