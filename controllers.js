@@ -15,9 +15,9 @@ var path = require('path'),
 
 
 exports.indexController = function(req, res) {
-    Template.find({}, function(templateErr, templates) {
-        Page.find({}).populate('template').run(function(pageErr, pages) {
-            MediaFile.find({}, function(mediaErr, mediaFiles) {
+    Template.find({}).sort('template_name', 'ascending').run(function(templateErr, templates) {
+        Page.find({}).sort('path', 'ascending').populate('template').run(function(pageErr, pages) {
+            MediaFile.find({}).sort('path', 'ascending').run(function(mediaErr, mediaFiles) {
                 res.render('index.ejs', {'templates': templates, 'pages': pages, 'mediaFiles': mediaFiles});
             });
         });
