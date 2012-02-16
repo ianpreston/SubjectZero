@@ -89,7 +89,7 @@ var generatePage = function(pageId) {
     Page.findOne({'_id': pageId}).populate('template').run(function(err, page) {
         var templateContext = {'page': {
             'title': page.title,
-            'content': page.body,
+            'body': page.body,
             'path': page.path,
         }};
 
