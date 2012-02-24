@@ -8,7 +8,13 @@ var fs = require('fs'),
     controllers = require('./controllers.js')
     config = require('./config.js').config;
 
-var app = express.createServer();
+if (config.sslEnabled) {
+    var app = express.createServer({'key': fs.readFileSync(config.sslKeyFilename),
+                                    'cert': fs.readFileSync(config.sslCertFilename)});
+} else {
+    var app = express.createServer();
+}
+
 app.use(connect.basicAuth(config.authUsername, config.authPassword));
 app.use(express.bodyParser());
 

@@ -7,4 +7,7 @@
     "webRoot": "/path/to/your/web/root",
     "mediaUploadPath": "/path/to/your/media/upload/dir",
     "logFilename": "/path/to/your/logfile.log",
+    "sslEnabled": false,
+    "sslKeyFilename": "/path/to/your/key.pem",
+    "sslCertFilename": "/path/to/your/cert.pem"
 }
