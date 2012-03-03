@@ -14,6 +14,7 @@
         var editor = ace.edit('aceEditor');
         var htmlMode = require('ace/mode/html').Mode;
         editor.getSession().setMode(new htmlMode());
+        editor.getSession().setUseWrapMode(true);
 
         // Fill the ace editor with the page's value to start
         editor.getSession().setValue($('#bodyTextarea').val());
