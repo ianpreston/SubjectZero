@@ -7,17 +7,11 @@ var fs = require('fs'),
 
 
 /**
- * Handles saving uploaded media files to the media upload directory. Takes the
- * current location of the actual uploaded media file (usually in /tmp) and moves
- * it to it's permanent location in config.mediaUploadDir.
- * Returns the file's new location.
- *
- * Synchronous!
+ * Returns a filename that the content of a static media file should be stored
+ * in. This doesn't modify the filesystem at all.
  */
-exports.savePhysicalMediaFile = function(currentPath) {
-    var newPath = path.join(config.mediaUploadPath, uuid.v1());
-    fs.renameSync(currentPath, newPath);
-    return newPath;
+exports.createPhysicalMediaFilename = function() {
+    return path.join(config.mediaUploadPath, uuid.v1());
 }
 
 /**

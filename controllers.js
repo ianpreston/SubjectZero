@@ -1,4 +1,5 @@
 var path = require('path'),
+    fs = require('fs'),
 
     mongoose = require('mongoose'),
 
@@ -182,7 +183,8 @@ exports.mediaCreateController = function(req, res) {
         res.render('media.create.ejs', {'errors': null});
     } else {
         // Move the uploaded file from /tmp to config.mediaUploadPath
-        var mediaFilePath = utils.savePhysicalMediaFile(req.files.uploaded.path);
+        var mediaFilePath = utils.createPhysicalMediaFilename();
+        fs.renameSync(req.files.uploaded.path, mediaFilePath);
 
         // Add a MediaFile document to the database
         newFile.path = req.body.file.path;
@@ -212,7 +214,9 @@ exports.mediaEditController = function(req, res) {
                 if (req.files.uploaded.size > 0) {
                     // Move the uploaded file into config.mediaUploadPath and
                     // update the MediaFile's mediaFilePath
-                    file.mediaFilePath = utils.savePhysicalMediaFile(req.files.uploaded.path);
+                    var mediaFilePath = utils.createPhysicalMediaFilename();
+                    file.mediaFilePath = mediaFilePath;
+                    fs.renameSync(req.files.uploaded.path, mediaFilePath);
                 }
 
                 file.path = req.body.file.path;
