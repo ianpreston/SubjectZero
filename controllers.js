@@ -28,7 +28,7 @@ exports.indexController = function(req, res) {
 exports.templateCreateController = function(req, res) {
     var newTemplate = new Template();
     if (req.method == 'GET') {
-        res.render('template.create.ejs', {'errors': null, 'template': newTemplate});
+        res.render('template.create.ejs', {'errors': null, 'template': newTemplate, 'editorLang': 'html'});
     } else {
         newTemplate.template_name = req.body.template.template_name;
         newTemplate.body = req.body.template.body;
@@ -37,7 +37,8 @@ exports.templateCreateController = function(req, res) {
                 var errors = [];
                 for(var e in err.errors) errors.push(err.errors[e].type);
                 res.render('template.create.ejs', {'errors': errors, 
-                                                   'template': req.body.template});
+                                                   'template': req.body.template,
+                                                   'editorLang': 'html'});
             } else {
                 res.redirect('/');
                 generate.generateSite();
@@ -51,7 +52,7 @@ exports.templateCreateController = function(req, res) {
 exports.templateEditController = function(req, res) {
     Template.findOne({'_id': req.params.id}, function(err, template) {
         if (req.method == 'GET') {
-            res.render('template.edit.ejs', {'errors': null, 'template': template});
+            res.render('template.edit.ejs', {'errors': null, 'template': template, 'editorLang': 'html'});
         } else {
             template.template_name = req.body.template.template_name;
             template.body = req.body.template.body;
@@ -60,7 +61,8 @@ exports.templateEditController = function(req, res) {
                     var errors = [];
                     for(var e in err.errors) errors.push(err.errors[e].type);
                     res.render('template.edit.ejs', {'errors': errors,
-                                                     'template': template});
+                                                     'template': template,
+                                                     'editorLang': 'html'});
                 } else {
                     res.redirect('/');
                     generate.generateSite();
@@ -101,7 +103,7 @@ exports.pageCreateController = function(req, res) {
 
         var newPage = new Page();
         if (req.method == 'GET') {
-            res.render('page.create.ejs', {'errors': null, 'page': newPage, 'templates': templates});
+            res.render('page.create.ejs', {'errors': null, 'page': newPage, 'templates': templates, 'editorLang': 'html'});
         } else {
             newPage.path = req.body.page.path
             newPage.title = req.body.page.title
@@ -113,7 +115,8 @@ exports.pageCreateController = function(req, res) {
                     for(var e in err.errors) errors.push(err.errors[e].type);
                     res.render('page.create.ejs', {'errors': errors,
                                                    'page': newPage,
-                                                   'templates': templates});
+                                                   'templates': templates,
+                                                   'editorLang': 'html'});
                 } else {
                     res.redirect('/');
                     generate.generateSite();
@@ -126,8 +129,11 @@ exports.pageCreateController = function(req, res) {
 exports.pageEditController = function(req, res) {
     Template.find({}, function(templateErr, templates) {
         Page.findOne({'_id': req.params.id}, function(pageErr, page) {
+            // Set the language of the Ace editor by the file extension
+            var editorLanguage = utils.getAceModeFromExtension(page.path.split(".").pop());
+
             if (req.method == 'GET') {
-                res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates});
+                res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates, 'editorLang': editorLanguage});
             } else {
                 // Delete the old page on disk, so if the path changes the
                 // old file isn't left behind in webroot
@@ -142,7 +148,8 @@ exports.pageEditController = function(req, res) {
                             for (var e in err.errors) errors.push(err.errors[e].type);
                             res.render('page.edit.ejs', {'errors': errors,
                                                          'page': page,
-                                                         'templates': templates});
+                                                         'templates': templates,
+                                                         'editorLang': editorLanguage});
                         } else {
                             res.redirect('/');
                             generate.generateSite();

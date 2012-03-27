@@ -12,8 +12,10 @@
         // Initialize the ace editor. Throw all this crap in the base template because
         // who cares.
         var editor = ace.edit('aceEditor');
-        var htmlMode = require('ace/mode/html').Mode;
-        editor.getSession().setMode(new htmlMode());
+        <% if (typeof editorLang != 'undefined') { %>
+            var loadedMode = require('ace/mode/<%= editorLang %>').Mode;
+            editor.getSession().setMode(new loadedMode());
+        <% } %>
         editor.getSession().setUseWrapMode(true);
 
         // Fill the ace editor with the page's value to start

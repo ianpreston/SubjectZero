@@ -19,3 +19,19 @@ exports.savePhysicalMediaFile = function(currentPath) {
     fs.renameSync(currentPath, newPath);
     return newPath;
 }
+
+/**
+ * Takes input in the form of a file extension (i.e. 'js', 'html', 'css', etc)
+ * and returns an AceJS editor Mode (i.e., 'javascript, 'html', 'css', et al). Returns
+ * 'text' if no editor mode is found for the extension.
+ */
+exports.getAceModeFromExtension = function(ext) {
+    return extensionsToAceModes[ext] || 'text';
+}
+
+var extensionsToAceModes = {
+    'js': 'javascript',
+    'html': 'html',
+    'css': 'css',
+    'php': 'php'
+};
