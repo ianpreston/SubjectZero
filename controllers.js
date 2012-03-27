@@ -184,7 +184,6 @@ exports.mediaCreateController = function(req, res) {
     } else {
         // Move the uploaded file from /tmp to config.mediaUploadPath
         var mediaFilePath = utils.createPhysicalMediaFilename();
-        fs.renameSync(req.files.uploaded.path, mediaFilePath);
 
         // Add a MediaFile document to the database
         newFile.path = req.body.file.path;
@@ -195,6 +194,9 @@ exports.mediaCreateController = function(req, res) {
                 for (var e in err.errors) errors.push(err.errors[e].type);
                 res.render('media.create.ejs', {'errors': errors});
              } else {
+                // Since there were no errors saving the MediaFile, save the physical
+                // media file to mediaUploadPath and generate the site
+                fs.renameSync(req.files.uploaded.path, mediaFilePath);
                 res.redirect('/');
                 generate.generateSite();
              }
