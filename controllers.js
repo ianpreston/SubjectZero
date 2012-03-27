@@ -214,11 +214,9 @@ exports.mediaEditController = function(req, res) {
             generate.deleteMediaFile(file._id, function() {
                 // If a new file was uploaded
                 if (req.files.uploaded.size > 0) {
-                    // Move the uploaded file into config.mediaUploadPath and
-                    // update the MediaFile's mediaFilePath
-                    var mediaFilePath = utils.createPhysicalMediaFilename();
-                    file.mediaFilePath = mediaFilePath;
-                    fs.renameSync(req.files.uploaded.path, mediaFilePath);
+                    // Overwrite the physical media file at file.mediaFilePath with the new
+                    // uploaded file's contents
+                    fs.renameSync(req.files.uploaded.path, file.mediaFilePath);
                 }
 
                 file.path = req.body.file.path;
