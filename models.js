@@ -29,7 +29,7 @@ var PageSchema = new mongoose.Schema({
 
 var MediaFileSchema = new mongoose.Schema({
     path: { type: String,
-            validate: [function(p) { return p != '/'; }, 'Static file must have a path'],
+            validate: [function(p) { return p.charAt(p.length-1) != '/'; }, 'Static file must have a path that is not a directory'],
             set: function(p) { return path.normalize('/' + p); } },
 
     // The location where the uploaded file is stored
