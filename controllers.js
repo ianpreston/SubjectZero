@@ -240,9 +240,13 @@ exports.mediaDeleteController = function(req, res) {
         if (req.method == 'GET') {
             res.render('media.delete.ejs', {'file': file});
         } else {
+            // Remove the media file from webroot, remove the media file from mediaUploadPath,
+            // and remove the MediaFile document from the database
             generate.deleteMediaFile(file._id, function() {
-                file.remove(function(err) {
-                    res.redirect('/');
+                fs.unlink(file.mediaFilePath, function(err) {
+                    file.remove(function(err) {
+                        res.redirect('/');
+                    });
                 });
             });
         }
