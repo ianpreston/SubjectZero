@@ -208,7 +208,7 @@ exports.mediaCreateController = function(req, res) {
 exports.mediaEditController = function(req, res) {
     MediaFile.findOne({'_id': req.params.id}, function(err, file) {
         if (req.method == 'GET') {
-            res.render('media.edit.ejs', {'errors': null, 'file': file});
+            res.render('media.edit.ejs', {'errors': null, 'file': file, 'webRootUrl': config.webRootUrl});
         } else {
             // Delete the old media file from disk, so if the path changes the
             // old file isn't left behind in webroot
@@ -225,7 +225,7 @@ exports.mediaEditController = function(req, res) {
                     if (err) {
                         var errors = [];
                         for (var e in err.errors) errors.push(err.errors[e].type);
-                        res.render('media.create.ejs', {'errors': errors, 'file': file});
+                        res.render('media.create.ejs', {'errors': errors, 'file': file, 'webRootUrl': config.webRootUrl});
                      } else {
                         res.redirect('/');
                         generate.generateSite();
