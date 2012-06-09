@@ -11,7 +11,7 @@
 <h2>Pages</h2>
 <ul>
 <% pages.forEach(function(p) { %>
-    <li><strong><%= p.path %></strong> (<%= p.template.template_name %>) <a href="/page/<%= p.id %>/edit">edit</a> <a href="/page/<%= p.id %>/delete">delete</a></li>
+    <li><strong><%= p.path %></strong> (<%= p.template.template_name %>) <a href="/page/<%= p.id %>/edit">edit</a> <a href="/page/<%= p.id %>/delete">delete</a> <a href="<%= webRootUrl %><%= p.path %>">view</a></li> 
 <% }); %>
     <li><a href="/page/create">create page</a></li>
 </ul>
@@ -19,7 +19,7 @@
 <h2>Media Files</h2>
 <ul>
 <% mediaFiles.forEach(function(m) { %>
-    <li><strong><%= m.path %></strong> <a href="/media/<%= m.id %>/edit">edit</a> <a href="/media/<%= m.id %>/delete">delete</a></li>
+    <li><strong><%= m.path %></strong> <a href="/media/<%= m.id %>/edit">edit</a> <a href="/media/<%= m.id %>/delete">delete</a> <a href="<%= webRootUrl %><%= m.path %>">view</a></li>
 <% }); %>
     <li><a href="/media/create">upload media file</a></li>
 </ul>
