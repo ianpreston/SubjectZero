@@ -19,7 +19,7 @@ exports.indexController = function(req, res) {
     Template.find({}).sort('template_name', 'ascending').run(function(templateErr, templates) {
         Page.find({}).sort('path', 'ascending').populate('template').run(function(pageErr, pages) {
             MediaFile.find({}).sort('path', 'ascending').run(function(mediaErr, mediaFiles) {
-                res.render('index.ejs', {'templates': templates, 'pages': pages, 'mediaFiles': mediaFiles});
+                res.render('index.ejs', {'templates': templates, 'pages': pages, 'mediaFiles': mediaFiles, 'webRootUrl': config.webRootUrl});
             });
         });
     });
@@ -134,7 +134,7 @@ exports.pageEditController = function(req, res) {
             var editorLanguage = utils.getAceModeFromExtension(page.path.split(".").pop());
 
             if (req.method == 'GET') {
-                res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates, 'editorLang': editorLanguage});
+                res.render('page.edit.ejs', {'errors': null, 'page': page, 'templates': templates, 'editorLang': editorLanguage, 'webRootUrl': config.webRootUrl});
             } else {
                 // Delete the old page on disk, so if the path changes the
                 // old file isn't left behind in webroot
@@ -150,7 +150,8 @@ exports.pageEditController = function(req, res) {
                             res.render('page.edit.ejs', {'errors': errors,
                                                          'page': page,
                                                          'templates': templates,
-                                                         'editorLang': editorLanguage});
+                                                         'editorLang': editorLanguage,
+                                                         'webRootUrl': config.webRootUrl});
                         } else {
                             res.redirect('/');
                             generate.generateSite();

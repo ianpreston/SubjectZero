@@ -30,6 +30,8 @@ To configure your SubjectZero, rename `config_example.json` to `config.json`. Th
 
   `webRoot`: The location on your filesystem where the primary web server (say, lighttpd or nginx) will serve files from. The resulting static site that SubjectZero generates will be stored in this directory.
 
+  `webRootUrl`: The public root URL where the files stored in `webRoot` can be accessed
+
   `mediaUploadPath`: The location on your filesystem where media files uploaded from the web interface will be stored. This isn't a temp directory, your media files are stored there permanently. It shouldn't be web viewable, your media files will be copied into `webRoot`.
 
   `logFilename`: The desired path to the log file.
