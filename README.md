@@ -8,13 +8,13 @@ As the name would suggest, SubjectZero is entirely an experimental idea at this 
 
 If you don't have Node.JS and MongoDB installed, you must install them first. On some distros you may be able to do this with your package manager.
 
-    # apt-get install node mongodb
+    # apt-get install nodejs mongodb
 
-Install the lengthy list of dependencies:
+Install dependencies:
 
-    $ npm install express connect node-uuid log4js hogan mongoose ejs
+    $ npm install
 
-Now configure SubjectZero (see below) and run the server:
+Now configure SubjectZero (see below), then run the server:
 
     $ node main.js
 
